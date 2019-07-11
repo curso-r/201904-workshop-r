@@ -9,8 +9,11 @@ arquivos_NO <- list.files(path = "data-raw", pattern = "NO", full.names = TRUE)
 df_CO <- map_dfr(arquivos_CO, read_excel)
 df_NO <- map_dfr(arquivos_NO, read_excel)
 
+
+
 View(df_CO)
 View(df_NO)
+
 
 df_CO <- df_CO %>%
   rename(mass_co = mass_conc) %>%
@@ -23,7 +26,18 @@ df_NO <- df_NO %>%
 View(df_CO)
 View(df_NO)
 
-df <- inner_join(df_CO, df_NO, by = "time")
+library(data.table)
+
+df <- inner_join(
+  df_CO %>% filter(), 
+  df_NO, 
+  by = "time"
+  ) %>% 
+  filter()
+
+
+
 View(df)
 
 write_xlsx(df, "base-agregada.xlsx")
+
